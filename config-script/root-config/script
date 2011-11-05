@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Skrip untuk memperbarui ign-status-on dan Firefox 6
+if [ $UID == "0" ]
+then
+cp -f /usr/share/ign-config/conky.conf /etc/conky/conky.conf
+tar xjf /usr/share/ign-config/ff6d.tar.bz2 -C /usr/lib/firefox-6/
+else
+zenity --error --text "You need to be root!"
+fi

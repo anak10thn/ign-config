@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Skrip untuk memunculkan status di bagian kanan
+/usr/bin/conky
+exit 0

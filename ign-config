@@ -1,0 +1,38 @@
+#!/bin/bash
+# ibnu yahya <ibnu.yahya@toroo.org>
+PATH_IGN="/usr/share/ign-config"
+menuUI() {
+echo 'zenity --width 600 --height 300 \
+--list --title "IGN Config" \
+--text "Menu konfigurasi `cat /etc/ign-release`" \
+--column "Pilih Menu" --column "Keterangan" \' >/tmp/.menu_ui
+ls $PATH_IGN/config-script >/tmp/.list_config_script
+
+while read LIST
+do
+echo -n "$LIST \"`cat $PATH_IGN/config-script/$LIST/desc`\" " >>/tmp/.menu_ui
+done </tmp/.list_config_script
+}
+
+menuUI; chmod 777 /tmp/.menu_ui
+
+MENU=`/tmp/.menu_ui`
+
+if [ $MENU != "" ]
+then
+chmod 755 $PATH_IGN/config-script/$MENU/script
+
+if [ `cat $PATH_IGN/config-script/$MENU/root` == "1" ]
+then
+beesu bash $PATH_IGN/config-script/$MENU/script
+exit 0
+else
+bash $PATH_IGN/config-script/$MENU/script
+exit 0
+fi
+
+else
+zenity --error --text "Anda belum memilih salah satu dari menu!"
+exit 0
+fi
+

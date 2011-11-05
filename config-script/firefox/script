@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Skrip untuk memindah profile firefox.
+# Saat Firefox dijalankan, profile baru akan dibuat ulang.
+mv -f ~/.mozilla ~/.mozilla-`date +"%F"-"%T"`

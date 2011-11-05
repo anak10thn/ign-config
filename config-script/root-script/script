@@ -1,0 +1,166 @@
+#!/bin/bash
+
+# Skrip untuk menghasilkan beberapa skrip lainnya.
+
+cat > /usr/sbin/ign-desktop-gnome2 << EOF.gn2
+#!/bin/bash
+
+mkdir -p ~/.config/dconf/
+mv ~/.config/dconf/user ~/.config/dconf/user-\`date +"%F"-"%T"\`
+tar -xjf /usr/share/ign-config/home-igos-config-gnome2.tar.bz2 -C ~/.config/
+
+mv ~/.screenrc ~/.screenrc-`date +"%F"-"%T"`
+cp /usr/share/ign-config/.screenrc ~/.screenrc
+
+mv ~/.conkyrc ~/.conky-`date +"%F"-"%T"`
+cp /usr/share/ign-config/.conkyrc ~/.conkyrc
+
+killall gnome-session
+
+exit 0
+EOF.gn2
+
+cat > /usr/sbin/ign-desktop-gnome3 << EOF.gn3
+#!/bin/bash
+
+mkdir -p ~/.config/dconf/
+mv -f ~/.config/dconf/user ~/.config/dconf/user-\`date +"%F"-"%T"\`
+tar -xjf /usr/share/ign-config/home-igos-config-gnome3.tar.bz2 -C ~/.config/
+
+mv ~/.screenrc ~/.screenrc-`date +"%F"-"%T"`
+cp /usr/share/ign-config/.screenrc ~/.screenrc
+
+mv ~/.conkyrc ~/.conky-`date +"%F"-"%T"`
+cp /usr/share/ign-config/.conkyrc ~/.conkyrc
+
+killall gnome-session
+
+exit 0
+EOF.gn3
+
+cat > /usr/sbin/ign-desktop-lxde << EOF.lxcon
+#!/bin/bash
+
+mkdir -p ~/.config/dconf/
+mv -f ~/.config/dconf/user ~/.config/dconf/user-\`date +"%F"-"%T"\`
+tar -xjf /usr/share/ign-config/home-igos-config-lxde.tar.bz2 -C ~/.config/
+
+mv ~/.screenrc ~/.screenrc-`date +"%F"-"%T"`
+cp /usr/share/ign-config/.screenrc ~/.screenrc
+
+mv ~/.conkyrc ~/.conky-`date +"%F"-"%T"`
+cp /usr/share/ign-config/.conkyrc ~/.conkyrc
+
+# Salin .desktop 
+cp /usr/share/applications/mozilla-firefox.desktop         ~/Desktop/
+cp /usr/share/applications/fedora-pcmanfm.desktop          ~/Desktop/
+cp /usr/share/applications/rpmfusion-gnome-mplayer.desktop ~/Desktop/
+cp /usr/share/applications/libreoffice-writer.desktop      ~/Desktop/
+cp /usr/share/applications/libreoffice-calc.desktop        ~/Desktop/
+
+echo " "
+echo "Lakukan: "
+echo "1. Ubah kata sandi: $ passwd <ENTER>"
+echo "2. Login ulang, lalu pilih LXDE"
+echo " "
+EOF.lxcon
+
+
+cat > /usr/sbin/ign-lxde-root << EOF.lxde
+#!/bin/bash
+
+# Harus dijalankan root
+# -------------------------------------------------------
+if [ "$(id -u)" != "0" ]; then
+  echo "This script must be run as root" 1>&2
+  exit 1
+else
+
+# Konfigurasi LXDE dan LXDM
+# Buat /etc/sysconfig/desktop
+cat > /etc/sysconfig/desktop <<EOF.lx
+PREFERRED=/usr/bin/startlxde
+DISPLAYMANAGER=/usr/sbin/lxdm
+EOF.lx
+
+# Jalankan gamin
+cat > /etc/xdg/lxsession/LXDE/autostart << EOF.gam
+/usr/libexec/gam_server
+@lxpanel --profile LXDE
+@pcmanfm2 --desktop --profile lxde
+@pulseaudio -D
+EOF.gam
+
+echo "."
+echo "Konfigurasi /etc/sysconfig/desktop selesai dibuat."
+echo "Lakukan boot ulang untuk memunculkan LXDE."
+echo "."
+
+fi
+# -------------------------------------------------------
+
+EOF.lxde
+
+cat > /usr/sbin/ign-atur-tanggal << EOF.tgl
+#!/bin/bash
+
+gsettings set org.gnome.shell.clock show-date true
+gsettings set org.gnome.shell.clock show-seconds true
+gsettings set org.gnome.shell.calendar show-weekdate true
+
+EOF.tgl
+
+cat > /usr/sbin/ign-status-on << EOF.ck
+#!/bin/bash
+/usr/bin/conky
+exit 0
+EOF.ck
+
+cat > /usr/sbin/ign-status-off << EOF.off
+#!/bin/bash
+killall conky
+exit 0
+EOF.off
+
+cat > /usr/sbin/ign-repo-lokal << EOF.lk
+sed -i -e 's!enabled=0!enabled=1!' /etc/yum.repos.d/media.repo
+sed -i -e 's!enabled=1!enabled=0!' /etc/yum.repos.d/ign2011-all.repo
+sed -i -e 's!enabled=1!enabled=0!' /etc/yum.repos.d/ign2011-extra.repo
+sed -i -e 's!enabled=1!enabled=0!' /etc/yum.repos.d/ign2011-other.repo
+sed -i -e 's!enabled=1!enabled=0!' /etc/yum.repos.d/ign2011-updates.repo
+EOF.lk
+
+cat > /usr/sbin/ign-repo-internet << EOF.int
+sed -i -e 's!enabled=1!enabled=0!' /etc/yum.repos.d/media.repo
+sed -i -e 's!enabled=0!enabled=1!' /etc/yum.repos.d/ign2011-all.repo
+sed -i -e 's!enabled=0!enabled=1!' /etc/yum.repos.d/ign2011-extra.repo
+sed -i -e 's!enabled=0!enabled=1!' /etc/yum.repos.d/ign2011-other.repo
+sed -i -e 's!enabled=0!enabled=1!' /etc/yum.repos.d/ign2011-updates.repo
+EOF.int
+
+cat > /usr/sbin/ign-sudo-igos << EOF.sd
+echo "# -------------------------------------------------------------------" >> /etc/sudoers
+echo "# Menambahkan pengguna igos agar dapat melakukan sudo tanpa password." >> /etc/sudoers
+echo "# -------------------------------------------------------------------" >> /etc/sudoers
+echo "igos  	ALL=(ALL)  	NOPASSWD: ALL" >> /etc/sudoers
+EOF.sd
+
+#cat > /usr/sbin/ign-vga-sis << EOF.vga
+#!/bin/bash
+#
+#if [ -f /etc/X11/xorg.conf ] ; then
+#   mv -f /etc/X11/xorg.conf /etc/X11/xorg.conf-\`date +"%F"-"%T"\`
+#fi
+#cp -f /usr/share/ign-config/vga-sis1-xorg.conf /etc/X11/xorg.conf
+#chown root:root /etc/X11/xorg.conf
+#
+#exit 0
+#EOF.vga
+
+chmod 755 /usr/sbin/ign-*
+
+echo " "
+echo "Lakukan: "
+echo "1. Ubah kata sandi: $ passwd <ENTER>"
+echo "2. Login ulang, lalu pilih LXDE"
+echo " "

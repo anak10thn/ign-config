@@ -1,0 +1,22 @@
+#!/bin/bash
+# ibnu yahya <ibnu.yahya@toroo.org>
+
+if [ $UID == "0" ]
+then
+
+desktopIGN() {
+zenity --width 550 --height 200 \
+--list --title "Pilih Desktop" \
+--text "Menu konfigurasi `cat /etc/ign-release`" \
+--radiolist --column "Pilih" --column "Desktop" --column "Keterangan" \
+TRUE "Gnome3" "Pilih Gnome 3 sebagai default desktop environment anda." \
+FALSE "Gnome2" "Pilih Gnome 2 sebagai default desktop environment anda." \
+FALSE "LXDE" "Pilih LXDE sebagai default desktop environment anda."
+}
+DESKTOPIGN=`desktopIGN`;
+#chmod 755 /usr/share/ign-config/config-script/desktop/$DESKTOPIGN
+#bash /usr/share/ign-config/config-script/desktop/$DESKTOPIGN
+echo /usr/share/ign-config/config-script/desktop/$DESKTOPIGN
+else
+zenity --error --text "You need to be root!"
+fi

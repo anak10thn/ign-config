@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Skrip untuk mengubah Desktop ke LXDE
+
+# Harus dijalankan root
+# -------------------------------------------------------
+if [ "0" != "0" ]; then
+  echo "This script must be run as root" 1>&2
+  exit 1
+else
+
+# Konfigurasi LXDE dan LXDM
+# Buat /etc/sysconfig/desktop
+cat > /etc/sysconfig/desktop <<EOF.lx
+PREFERRED=/usr/bin/startlxde
+DISPLAYMANAGER=/usr/sbin/lxdm
+EOF.lx
+
+# Jalankan gamin
+cat > /etc/xdg/lxsession/LXDE/autostart << EOF.gam
+/usr/libexec/gam_server
+@lxpanel --profile LXDE
+@pcmanfm2 --desktop --profile lxde
+@pulseaudio -D
+EOF.gam
+
+echo "."
+echo "Konfigurasi /etc/sysconfig/desktop selesai dibuat."
+echo "Lakukan boot ulang untuk memunculkan LXDE."
+echo "."
+
+fi
+# -------------------------------------------------------
+

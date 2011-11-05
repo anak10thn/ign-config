@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Skrip untuk nonaktifkan status di bagian kanan
+killall conky
+exit 0

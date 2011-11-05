@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Skrip untuk mengatur tampilan LXDE
+mkdir -p ~/.config/dconf/
+mv ~/.config/dconf/user ~/.config/dconf/user-`date +"%F"-"%T"`
+tar -xjf /usr/share/ign-config/home-igos-config-lxde.tar.bz2 -C ~/.config/
+
+mv ~/.screenrc ~/.screenrc-`date +"%F"-"%T"`
+cp /usr/share/ign-config/.screenrc ~/.screenrc
+
+mv ~/.conkyrc ~/.conky-`date +"%F"-"%T"`
+cp /usr/share/ign-config/.conkyrc ~/.conkyrc
+
+# Salin .desktop 
+cp /usr/share/applications/mozilla-firefox.desktop         ~/Desktop/
+cp /usr/share/applications/fedora-pcmanfm.desktop          ~/Desktop/
+cp /usr/share/applications/rpmfusion-gnome-mplayer.desktop ~/Desktop/
+cp /usr/share/applications/libreoffice-writer.desktop      ~/Desktop/
+cp /usr/share/applications/libreoffice-calc.desktop        ~/Desktop/
+
+echo " "
+echo "Lakukan: "
+echo "1. Ubah kata sandi: $ passwd <ENTER>"
+echo "2. Login ulang, lalu pilih LXDE"
+echo " "
+
+exit 0

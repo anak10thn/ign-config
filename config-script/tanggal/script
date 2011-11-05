@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Skrip untuk memunculkan detik
+gsettings set org.gnome.shell.clock show-date true
+gsettings set org.gnome.shell.clock show-seconds true
+gsettings set org.gnome.shell.calendar show-weekdate true
+

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Skrip untuk membuat "igos" dapat menjalankan perintah root
+echo "# -------------------------------------------------------------------" >> /etc/sudoers
+echo "# Menambahkan pengguna igos agar dapat melakukan sudo tanpa password." >> /etc/sudoers
+echo "# -------------------------------------------------------------------" >> /etc/sudoers
+echo "igos  	ALL=(ALL)  	NOPASSWD: ALL" >> /etc/sudoers

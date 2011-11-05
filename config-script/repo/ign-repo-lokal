@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Skrip untuk mengatur repositori lokal
+sed -i -e 's!enabled=0!enabled=1!' /etc/yum.repos.d/media.repo
+sed -i -e 's!enabled=1!enabled=0!' /etc/yum.repos.d/ign2011-all.repo
+sed -i -e 's!enabled=1!enabled=0!' /etc/yum.repos.d/ign2011-extra.repo
+sed -i -e 's!enabled=1!enabled=0!' /etc/yum.repos.d/ign2011-other.repo
+sed -i -e 's!enabled=1!enabled=0!' /etc/yum.repos.d/ign2011-updates.repo

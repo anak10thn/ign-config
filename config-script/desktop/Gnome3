@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Skrip untuk mengatur tampilan GNOME3
+mkdir -p ~/.config/dconf/
+mv -f ~/.config/dconf/user ~/.config/dconf/user-`date +"%F"-"%T"`
+tar -xjf /usr/share/ign-config/home-igos-config-gnome3.tar.bz2 -C ~/.config/
+
+mv ~/.screenrc ~/.screenrc-`date +"%F"-"%T"`
+cp /usr/share/ign-config/.screenrc ~/.screenrc
+
+mv ~/.conkyrc ~/.conky-`date +"%F"-"%T"`
+cp /usr/share/ign-config/.conkyrc ~/.conkyrc
+
+killall gnome-session
+
+exit 0
